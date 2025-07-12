@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    id("maven-publish")
+    id("signing") // 用于 GPG 签名
 }
 
 android {
@@ -14,8 +16,9 @@ android {
         consumerProguardFiles("consumer-rules.pro")
     }
 
-    buildFeatures{
+    buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 
     buildTypes {
@@ -28,19 +31,21 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "17"
     }
 }
 
 dependencies {
 
-    implementation(libs.androidx.core.ktx)
+    // 基础部分尽量少依赖第三方库
     implementation(libs.androidx.appcompat)
-    implementation(libs.material)
+    //    implementation(libs.androidx.core.ktx)
+    //    implementation(libs.material)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

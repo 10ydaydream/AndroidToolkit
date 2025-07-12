@@ -1,24 +1,21 @@
-package com.daydreaminger.androiddev.common.view.base
+package com.daydreaminger.android.toolkit.ui.compat.binding
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.viewbinding.ViewBinding
 import com.daydreaminger.android.toolkit.ui.compat.BridgeCompatFragment
 import com.daydreaminger.android.toolkit.utils.binding.BindingUtils
+import com.daydreaminger.android.toolkit.utils.log.LogHelper
 
 /**
+ * 通过泛型自动解析Bingding布局实例的基类
  *
  * @Author: daydreaminger
  * @CreateDate: 2023/2/19 16:34
  */
 abstract class BaseBindingFragment<V : ViewBinding> : BridgeCompatFragment() {
-    companion object {
-        const val TAG = "BaseBindingFragment"
-    }
-
     protected lateinit var binding: V
 
     override fun onCreateView(
@@ -29,10 +26,22 @@ abstract class BaseBindingFragment<V : ViewBinding> : BridgeCompatFragment() {
         val reflectBinding =
             BindingUtils.inflateBindingWithReflect<V>(this.javaClass, layoutInflater)
         if (reflectBinding == null) {
-            return TextView(context)
+            LogHelper.w(TAG, "onCreateView: inflate binding with reflect failure.")
+            return null
         } else {
             binding = reflectBinding
             return binding.root
         }
+    }
+
+    /**
+     * binding是否已经初始化了
+     * */
+    protected fun isInflaterForBinding(): Boolean {
+        return this::binding.isInitialized
+    }
+
+    companion object {
+        const val TAG = "BaseBindingFragment"
     }
 }

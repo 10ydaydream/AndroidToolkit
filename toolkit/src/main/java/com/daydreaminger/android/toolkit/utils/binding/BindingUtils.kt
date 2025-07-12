@@ -1,6 +1,7 @@
 package com.daydreaminger.android.toolkit.utils.binding
 
 import android.view.LayoutInflater
+import com.daydreaminger.android.toolkit.utils.log.LogHelper
 import java.lang.reflect.ParameterizedType
 
 /**
@@ -22,6 +23,7 @@ object BindingUtils {
      * @param layoutInflater LayoutInflater实例，用于生成ViewBinging/DataBinding实例
      * @param index 泛型位置，默认为第一个，如果有必要根据实际泛型参数指定对应下标位置，下标从0开始
      * @return 返回泛型中Binding实例，没有则返回null
+     * @throws IllegalArgumentException 传入的带泛型的Class中，指定下标的泛型必须为ViewBinging/DataBinding子类，否则抛出异常
      * */
     @Suppress("UNCHECKED_CAST")
     @JvmStatic
@@ -35,7 +37,7 @@ object BindingUtils {
             Class.forName(BINDING_INTERFACE_PKG_PATH) ?: return null
         } catch (e: Exception) {
             e.printStackTrace()
-            throw IllegalAccessException("arg class not implement interface ViewBinding or DataBinding.")
+            throw IllegalArgumentException("arg class not implement interface ViewBinding or DataBinding.")
         }
         // 读取Class中注解的相关信息，这里拿的就是类定义的泛型类 -- 因为泛型特性，编译后子类的泛型信息会记录对应的类型
         val parameterizedType = hostClass.genericSuperclass as ParameterizedType
@@ -55,7 +57,7 @@ object BindingUtils {
                 // 返回强转后的具体Binding类型的实例
                 dataBinding as V
             } catch (e: Exception) {
-
+                LogHelper.e(TAG, "inflateBindingWithReflect: error.", e)
                 null
             }
         }

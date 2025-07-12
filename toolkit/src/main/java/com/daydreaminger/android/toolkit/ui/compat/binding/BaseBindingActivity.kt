@@ -1,9 +1,10 @@
-package com.daydreaminger.androiddev.common.view.base
+package com.daydreaminger.android.toolkit.ui.compat.binding
 
 import android.os.Bundle
 import androidx.viewbinding.ViewBinding
 import com.daydreaminger.android.toolkit.ui.compat.BridgeCompatActivity
 import com.daydreaminger.android.toolkit.utils.binding.BindingUtils
+import com.daydreaminger.android.toolkit.utils.log.LogHelper
 
 /**
  *
@@ -11,9 +12,6 @@ import com.daydreaminger.android.toolkit.utils.binding.BindingUtils
  * @CreateDate: 2023/2/11 9:51
  */
 abstract class BaseBindingActivity<V : ViewBinding> : BridgeCompatActivity() {
-    companion object {
-        const val TAG = "BaseBindingActivity"
-    }
 
     protected lateinit var binding: V
 
@@ -38,6 +36,7 @@ abstract class BaseBindingActivity<V : ViewBinding> : BridgeCompatActivity() {
         var reflectBinding =
             BindingUtils.inflateBindingWithReflect<V>(this.javaClass, layoutInflater)
         return if (reflectBinding == null) {
+            LogHelper.w(TAG, "setLayoutWithReflect: inflate binding with reflect failure.")
             false
         } else {
             binding = reflectBinding
@@ -46,7 +45,15 @@ abstract class BaseBindingActivity<V : ViewBinding> : BridgeCompatActivity() {
         }
     }
 
+    /**
+     * binding是否已经初始化了
+     * */
     protected fun isInflaterForBinding(): Boolean {
         return this::binding.isInitialized
     }
+
+    companion object {
+        const val TAG = "BaseBindingActivity"
+    }
+
 }

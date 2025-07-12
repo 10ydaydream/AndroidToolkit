@@ -1,4 +1,6 @@
-package com.daydreaminger.android.lib.utils.bar
+@file:Suppress("DEPRECATION")
+
+package com.daydreaminger.android.toolkit.utils.bar
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -28,6 +30,7 @@ import androidx.appcompat.app.AppCompatActivity
 private const val COLOR_TRANSPARENT = 0
 
 /** 设置状态栏颜色 */
+@SuppressLint("ObsoleteSdkInt")
 fun Activity.statusBarColor(@ColorInt color: Int) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
@@ -100,6 +103,7 @@ fun Activity.immersive(@ColorInt color: Int = COLOR_TRANSPARENT, darkMode: Boole
  *
  * @param black 是否显示黑色状态栏白色文字(不恢复状态栏颜色)
  */
+@SuppressLint("ObsoleteSdkInt", "UseKtx")
 @JvmOverloads
 fun Activity.immersiveExit(black: Boolean = false) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -150,6 +154,7 @@ fun Activity.darkMode(darkMode: Boolean = true) {
  * 如果是RelativeLayout设置padding值会导致centerInParent等属性无法正常显示
  * @param remove 如果默认paddingTop大于状态栏高度则添加无效, 如果小于状态栏高度则无法删除
  */
+@SuppressLint("ObsoleteSdkInt")
 @JvmOverloads
 fun View.statusPadding(remove: Boolean = false) {
     if (this is RelativeLayout) {
@@ -181,6 +186,7 @@ fun View.statusPadding(remove: Boolean = false) {
  * 增加View的marginTop值, 增加高度为状态栏高度, 用于防止视图和状态栏重叠
  * @param remove 如果默认marginTop大于状态栏高度则添加无效, 如果小于状态栏高度则无法删除
  */
+@SuppressLint("ObsoleteSdkInt")
 @JvmOverloads
 fun View.statusMargin(remove: Boolean = false) {
     if (Build.VERSION.SDK_INT >= 19) {
@@ -201,6 +207,7 @@ fun View.statusMargin(remove: Boolean = false) {
 /**
  * 创建假的透明栏
  */
+@SuppressLint("ObsoleteSdkInt")
 private fun Context.setTranslucentView(container: ViewGroup, color: Int) {
     if (Build.VERSION.SDK_INT >= 19) {
         var simulateStatusBar: View? = container.findViewById(android.R.id.custom)
@@ -217,10 +224,12 @@ private fun Context.setTranslucentView(container: ViewGroup, color: Int) {
 /**
  * 设置ActionBar的背景颜色
  */
+@SuppressLint("UseKtx")
 fun AppCompatActivity.setActionBarBackground(@ColorInt color: Int) {
     supportActionBar?.setBackgroundDrawable(ColorDrawable(color))
 }
 
+@SuppressLint("UseKtx")
 fun AppCompatActivity.setActionBarBackgroundRes(@ColorRes color: Int) {
     supportActionBar?.setBackgroundDrawable(ColorDrawable(resources.getColor(color)))
 }
@@ -228,6 +237,7 @@ fun AppCompatActivity.setActionBarBackgroundRes(@ColorRes color: Int) {
 /**
  * 设置ActionBar的背景颜色为透明
  */
+@SuppressLint("UseKtx")
 fun AppCompatActivity.setActionBarTransparent() {
     supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 }
@@ -237,6 +247,7 @@ fun AppCompatActivity.setActionBarTransparent() {
  *
  * @param enabled 是否显示导航栏
  */
+@SuppressLint("ObsoleteSdkInt")
 @JvmOverloads
 fun Activity.setNavigationBar(enabled: Boolean = true) {
     if (Build.VERSION.SDK_INT in 12..18) {
@@ -249,7 +260,9 @@ fun Activity.setNavigationBar(enabled: Boolean = true) {
         val systemUiVisibility = window.decorView.systemUiVisibility
         if (enabled) {
             window.decorView.systemUiVisibility =
-                systemUiVisibility and View.SYSTEM_UI_FLAG_HIDE_NAVIGATION and View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                // systemUiVisibility and View.SYSTEM_UI_FLAG_HIDE_NAVIGATION and View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                // 提示简化为0
+                0
         } else {
             window.decorView.systemUiVisibility = systemUiVisibility or
                     View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
@@ -294,6 +307,7 @@ val Activity?.isNavigationBar: Boolean
  * 如果当前设备存在导航栏返回导航栏高度, 否则0
  */
 val Context?.navigationBarHeight: Int
+    @SuppressLint("DiscouragedApi", "InternalInsetResource")
     get() {
         this ?: return 0
         val resourceId: Int = resources.getIdentifier("navigation_bar_height", "dimen", "android")
@@ -309,6 +323,7 @@ val Context?.navigationBarHeight: Int
  * 获取状态栏高度
  */
 val Context?.statusBarHeight: Int
+    @SuppressLint("InternalInsetResource", "DiscouragedApi")
     get() {
         this ?: return 0
         var result = 24
@@ -329,7 +344,6 @@ val Context?.statusBarHeight: Int
  *
  * 类型为：androidx.appcompat.widget.ContentFrameLayout
  * */
-@JvmOverloads
 fun Activity.findContentView(): ViewGroup {
     return window.decorView.findViewById(android.R.id.content)
 }
@@ -337,7 +351,6 @@ fun Activity.findContentView(): ViewGroup {
 /**
  * 获取Activity设置的布局
  * */
-@JvmOverloads
 fun Activity.findSetContentRootView(): View {
     val contentView = window.decorView.findViewById<ViewGroup>(android.R.id.content)
     return contentView.getChildAt(0)
