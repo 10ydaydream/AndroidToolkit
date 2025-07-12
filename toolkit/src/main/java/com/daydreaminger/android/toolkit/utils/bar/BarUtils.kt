@@ -1,5 +1,6 @@
 package com.daydreaminger.android.toolkit.utils.bar
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Resources
 import android.util.TypedValue
@@ -9,6 +10,7 @@ object BarUtils {
     /**
      * 获取顶部状态栏高度
      * */
+    @SuppressLint("DiscouragedApi", "InternalInsetResource")
     @JvmStatic
     fun getStatusBarHeight(context: Context?): Int {
         if (context == null) {
@@ -32,6 +34,7 @@ object BarUtils {
     /**
      * 获取底部导航栏高度
      * */
+    @SuppressLint("InternalInsetResource")
     @JvmStatic
     fun getNavigationHeight(context: Context?): Int {
         if (context == null) {
