@@ -1,0 +1,1 @@
+-keep class com.daydreaminger.android.toolkit.** { *; }

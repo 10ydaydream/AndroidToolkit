@@ -1,4 +1,4 @@
-package com.daydreaminger.android.lib.utils.bar
+package com.daydreaminger.android.toolkit.utils.bar
 
 import android.content.Context
 import android.content.res.Resources
