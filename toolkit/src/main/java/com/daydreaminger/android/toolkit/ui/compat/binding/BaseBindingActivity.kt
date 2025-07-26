@@ -12,7 +12,7 @@ import com.daydreaminger.android.toolkit.utils.log.LogHelper
  * @CreateDate: 2023/2/11 9:51
  */
 abstract class BaseBindingActivity<V : ViewBinding> : BridgeCompatActivity() {
-
+    protected var bindingIndex = 0
     protected lateinit var binding: V
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,7 +34,7 @@ abstract class BaseBindingActivity<V : ViewBinding> : BridgeCompatActivity() {
      * */
     protected open fun setLayoutWithReflect(): Boolean {
         var reflectBinding =
-            BindingUtils.inflateBindingWithReflect<V>(this.javaClass, layoutInflater)
+            BindingUtils.inflateBindingWithReflect<V>(this.javaClass, layoutInflater, bindingIndex)
         return if (reflectBinding == null) {
             LogHelper.w(TAG, "setLayoutWithReflect: inflate binding with reflect failure.")
             false

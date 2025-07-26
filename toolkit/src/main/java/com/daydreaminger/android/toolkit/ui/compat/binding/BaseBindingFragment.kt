@@ -16,6 +16,7 @@ import com.daydreaminger.android.toolkit.utils.log.LogHelper
  * @CreateDate: 2023/2/19 16:34
  */
 abstract class BaseBindingFragment<V : ViewBinding> : BridgeCompatFragment() {
+    protected var bindingIndex = 0
     protected lateinit var binding: V
 
     override fun onCreateView(
@@ -24,7 +25,7 @@ abstract class BaseBindingFragment<V : ViewBinding> : BridgeCompatFragment() {
         savedInstanceState: Bundle?
     ): View? {
         val reflectBinding =
-            BindingUtils.inflateBindingWithReflect<V>(this.javaClass, layoutInflater)
+            BindingUtils.inflateBindingWithReflect<V>(this.javaClass, layoutInflater, bindingIndex)
         if (reflectBinding == null) {
             LogHelper.w(TAG, "onCreateView: inflate binding with reflect failure.")
             return null
