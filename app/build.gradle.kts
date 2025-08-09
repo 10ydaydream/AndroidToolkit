@@ -12,11 +12,13 @@ android {
         minSdk = 21
         targetSdk = 36
         versionCode = 1
-        versionName = "1.0"
+        versionName = "1.0.0_alpha25072712"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
-
+    buildFeatures {
+        viewBinding = true
+    }
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -37,6 +39,7 @@ android {
 
 dependencies {
 
+    implementation(project(":libs-graphic"))
     implementation(project(":toolkit"))
 
     implementation(libs.androidx.core.ktx)

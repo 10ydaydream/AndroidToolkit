@@ -22,3 +22,4 @@ dependencyResolutionManagement {
 rootProject.name = "AndroidToolkit"
 include(":app")
 include(":toolkit")
+include(":libs-graphic")
